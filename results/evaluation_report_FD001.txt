@@ -1,0 +1,17 @@
+=== TURBOFAN ENGINE PREDICTIVE MAINTENANCE EVALUATION REPORT ===
+
+1. TEMPERATURE TREND MODEL (RUL PREDICTION) PERFORMANCE:
+   - RMSE: 4.28 cycles
+   - MAE: 3.34 cycles
+   - Training data shape: (10731, 100, 6)
+
+2. VIBRATION ALERT MODEL (CHANGE DETECTION) PERFORMANCE:
+   - Accuracy: 0.976
+   - Precision: 0.753
+   - Recall: 0.987
+   - F1-Score: 0.854
+   - Training data shape: (19731, 10, 7)
+
+=== MODEL PERFORMANCE SUMMARY ===
+✅ Temperature model predicts RUL within ±3.3 cycles on average
+✅ Vibration model detects changes with 97.6% accuracy
