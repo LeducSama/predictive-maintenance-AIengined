@@ -1,6 +1,6 @@
 # Turbofan Engine Predictive Maintenance System
 
-A comprehensive machine learning solution for turbofan engine predictive maintenance with integrated Power BI dashboards. This system implements a multi-signal approach with business-aligned evaluation metrics to optimize maintenance costs and prevent catastrophic failures.
+A comprehensive machine learning solution for turbofan engine predictive maintenance. This system implements a multi-signal approach with business-aligned evaluation metrics to optimize maintenance costs and prevent catastrophic failures.
 
 ## Business Objectives
 
@@ -33,29 +33,24 @@ A comprehensive machine learning solution for turbofan engine predictive mainten
 - **Vibration Model**: Lightweight LSTM for change detection
 - **Combined Predictor**: Multi-signal risk assessment
 
-## Power BI Integration
+## Alert System
 
-### Four Specialized Dashboards
+### Multi-Level Alert Classification
 
-1. **Executive Overview**
-   - Fleet health summary and KPIs
-   - Cost impact metrics and ROI
-   - Strategic maintenance insights
+1. **Critical Alerts**
+   - Immediate maintenance required
+   - High probability of failure
+   - Automated notifications to maintenance team
 
-2. **Operations Dashboard**
-   - Real-time engine status grid
-   - Immediate alert management
-   - Priority-based action lists
+2. **Warning Alerts**
+   - Schedule maintenance within 10 days
+   - Degradation trend detected
+   - Monitor closely for changes
 
-3. **Maintenance Planning**
-   - Maintenance timeline and scheduling
-   - Parts inventory coordination
-   - Resource allocation optimization
-
-4. **Technical Performance**
-   - Model accuracy monitoring
-   - Prediction vs actual analysis
-   - System performance metrics
+3. **Information Alerts**
+   - Continue normal operations
+   - Long-term monitoring
+   - Efficiency decline noted
 
 ## Quick Start
 
@@ -63,7 +58,6 @@ A comprehensive machine learning solution for turbofan engine predictive mainten
 ```bash
 Python 3.8+
 TensorFlow 2.13+
-Power BI Desktop
 8GB+ RAM recommended
 ```
 
@@ -92,19 +86,20 @@ python train_models.py --dataset all --compare
 python train_models.py --dataset FD002 --temp-epochs 150 --vib-epochs 75
 ```
 
-### Starting the API Server
+### Running Predictions
 ```bash
-# Start the Power BI integration API
-python src/api/powerbi_api.py
+# Run predictions on test data
+python predict.py --dataset FD001
 
-# API will be available at http://localhost:5000
+# Generate maintenance recommendations
+python predict.py --dataset FD001 --output-alerts
 ```
 
-### Power BI Setup
-1. Follow the [Power BI Integration Guide](POWER_BI_INTEGRATION_GUIDE.md)
-2. Configure data sources pointing to `http://localhost:5000/api`
-3. Import dashboard templates
-4. Set up real-time data refresh
+### Alert Configuration
+1. Configure alert thresholds in the system
+2. Set up notification channels (email, SMS)
+3. Define maintenance scheduling rules
+4. Test alert generation system
 
 ## Project Structure
 
@@ -120,10 +115,10 @@ Predictive Maintenance Dashboard for Turbofan Engines/
 │   │   └── dual_lstm_models.py # Temperature + Vibration models
 │   ├── evaluation/
 │   │   └── business_metrics.py # Custom penalty system
-│   └── api/
-│       └── powerbi_api.py      # Power BI integration endpoints
+│   └── prediction/
+│       └── predictor.py        # Main prediction engine
 ├── config/
-│   └── powerbi_config.json     # Dashboard configuration
+│   └── alert_config.json       # Alert system configuration
 ├── models/                     # Trained model files
 ├── logs/                       # Training and API logs
 ├── results/                    # Evaluation reports and metrics
@@ -132,23 +127,22 @@ Predictive Maintenance Dashboard for Turbofan Engines/
 ├── train_models.py             # Main training script
 ├── requirements.txt            # Python dependencies
 ├── README.md                   # This file
-└── POWER_BI_INTEGRATION_GUIDE.md  # Power BI setup guide
+└── predict.py                  # Main prediction script
 ```
 
-## API Endpoints
+## Prediction System
 
-### Core Endpoints
-- `GET /api/health` - System health check
-- `GET /api/engines/status` - Fleet status summary
-- `POST /api/engines/{id}/predict` - Engine-specific predictions
-- `GET /api/alerts` - Current system alerts
-- `GET /api/maintenance/schedule` - Maintenance planning data
-- `GET /api/analytics/performance` - Model performance metrics
+### Core Features
+- **RUL Prediction**: Remaining Useful Life estimation
+- **Alert Generation**: Multi-level alert classification
+- **Maintenance Scheduling**: Optimal maintenance timing
+- **Performance Monitoring**: Model accuracy tracking
 
-### Real-time Features
-- **Streaming Data**: Real-time engine status updates
-- **Alert Management**: Immediate notification system
-- **Mobile Support**: Field technician access
+### Output Formats
+- **CSV Reports**: Detailed prediction results
+- **Alert Logs**: System-generated alerts
+- **Maintenance Plans**: Recommended maintenance schedules
+- **Performance Metrics**: Model evaluation reports
 
 ## Model Performance & Key Design Decisions
 
@@ -202,10 +196,10 @@ Where catastrophic failures (late predictions) have 10x penalty vs. conservative
 
 ✅ **Models predict RUL trends with business-optimized penalties**  
 ✅ **Alert system catches vibration changes within 10 cycles**  
-✅ **Power BI dashboards provide actionable insights for all stakeholders**  
-✅ **Real-time integration delivers alerts within 15 minutes**  
-✅ **Executive dashboard clearly shows ROI and cost savings**  
-✅ **Mobile access enables immediate field technician response**  
+✅ **Alert classification provides actionable maintenance recommendations**  
+✅ **System generates alerts within processing time**  
+✅ **Performance metrics clearly show cost optimization**  
+✅ **Maintenance scheduling optimizes resource allocation**  
 ✅ **System demonstrates cost optimization over pure accuracy**  
 
 ## Development
@@ -214,15 +208,15 @@ Where catastrophic failures (late predictions) have 10x penalty vs. conservative
 1. **New Sensor Types**: Extend `data_loader.py` sensor categories
 2. **Additional Models**: Add models to `dual_lstm_models.py`
 3. **Custom Metrics**: Extend `business_metrics.py` evaluation
-4. **API Endpoints**: Add endpoints to `powerbi_api.py`
+4. **Prediction Features**: Add features to `predictor.py`
 
 ### Testing
 ```bash
 # Run unit tests
 python -m pytest tests/
 
-# Validate API endpoints
-python -m pytest tests/test_api.py
+# Validate prediction system
+python -m pytest tests/test_predictions.py
 
 # Check model performance
 python -m pytest tests/test_models.py
@@ -230,8 +224,8 @@ python -m pytest tests/test_models.py
 
 ### Deployment
 ```bash
-# Production API server
-gunicorn --bind 0.0.0.0:5000 src.api.powerbi_api:app
+# Production prediction system
+python predict.py --production --dataset all
 
 # Docker deployment
 docker build -t turbofan-maintenance .
@@ -279,7 +273,7 @@ docker run -p 5000:5000 turbofan-maintenance
 - Follow PEP 8 style guidelines
 - Add unit tests for new features
 - Update documentation for API changes
-- Test Power BI integration before submitting
+- Test prediction accuracy before submitting
 
 ## License
 
@@ -289,15 +283,15 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 - **NASA**: For providing the turbofan engine degradation dataset
 - **Business Domain Experts**: For guidance on cost optimization strategies
-- **Power BI Team**: For integration support and best practices
+- **ML Community**: For best practices and model optimization
 - **Open Source Community**: For the excellent ML and visualization libraries
 
 ## Support
 
 For technical support:
-- **API Issues**: Check logs in `logs/` directory
+- **Prediction Issues**: Check logs in `logs/` directory
 - **Model Performance**: Review evaluation reports in `results/`
-- **Power BI Integration**: See [Power BI Integration Guide](POWER_BI_INTEGRATION_GUIDE.md)
+- **Alert System**: Configure thresholds in `config/alert_config.json`
 - **General Questions**: Open an issue in the repository
 
 ---

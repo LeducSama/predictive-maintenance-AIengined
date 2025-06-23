@@ -175,25 +175,16 @@ def demo_ml_evaluation():
     print()
 
 
-def demo_api_simulation():
-    """Simulate API endpoints for Power BI integration"""
-    print("🔌 DEMO 4: Power BI API Integration Simulation")
+def demo_model_predictions():
+    """Demonstrate model prediction capabilities"""
+    print("🔌 DEMO 4: Model Prediction Capabilities")
     print("-" * 60)
     
-    print("Simulating API Endpoints:")
+    print("Demonstrating Prediction Capabilities:")
     
-    # Simulate fleet status endpoint
-    print("\n📊 Fleet Status Endpoint (/api/engines/status):")
-    fleet_data = {
-        'fleet_summary': {
-            'total_engines': 10,
-            'critical_engines': 1,
-            'warning_engines': 2,
-            'healthy_engines': 7,
-            'average_rul': 45.3
-        },
-        'engines': []
-    }
+    # Simulate engine predictions
+    print("\n🔮 Engine RUL Predictions:")
+    engines = []
     
     for i in range(1, 11):
         rul = max(10, np.random.normal(45, 15))
@@ -206,113 +197,72 @@ def demo_api_simulation():
         else:
             status = 'healthy'
         
-        fleet_data['engines'].append({
+        engines.append({
             'engine_id': i,
             'status': status,
             'rul_prediction': round(rul, 1),
-            'alert_probability': round(alert_prob, 3),
-            'location': f'Site_{i % 3 + 1}'
+            'alert_probability': round(alert_prob, 3)
         })
     
-    print(f"✓ Fleet Summary: {fleet_data['fleet_summary']}")
-    print(f"✓ Engine Details: {len(fleet_data['engines'])} engines")
+    for engine in engines:
+        print(f"  Engine {engine['engine_id']}: RUL={engine['rul_prediction']} cycles, Alert={engine['alert_probability']:.3f}")
     
-    # Simulate alerts endpoint
-    print("\n🚨 Alerts Endpoint (/api/alerts):")
-    alerts = [
-        {'alert_id': 'ALT_001', 'engine_id': 3, 'severity': 'critical', 'type': 'vibration_spike'},
-        {'alert_id': 'ALT_002', 'engine_id': 7, 'severity': 'warning', 'type': 'temperature_rise'},
-        {'alert_id': 'ALT_003', 'engine_id': 1, 'severity': 'info', 'type': 'efficiency_decline'}
-    ]
+    # Simulate maintenance recommendations
+    print("\n🔧 Maintenance Recommendations:")
+    for engine in engines[:5]:
+        if engine['status'] == 'critical':
+            print(f"  Engine {engine['engine_id']}: IMMEDIATE maintenance required")
+        elif engine['status'] == 'warning':
+            print(f"  Engine {engine['engine_id']}: Schedule maintenance within 10 days")
+        else:
+            print(f"  Engine {engine['engine_id']}: Continue normal operations")
     
-    for alert in alerts:
-        print(f"  🔔 {alert['alert_id']}: Engine {alert['engine_id']} - {alert['severity']} - {alert['type']}")
-    
-    # Simulate maintenance schedule endpoint
-    print("\n🔧 Maintenance Schedule Endpoint (/api/maintenance/schedule):")
-    maintenance = []
-    current_date = datetime.now()
-    
-    for i in range(1, 6):
-        days_ahead = np.random.randint(5, 60)
-        maintenance.append({
-            'engine_id': i,
-            'maintenance_type': np.random.choice(['routine', 'major']),
-            'days_until': days_ahead,
-            'parts_required': np.random.choice([True, False])
-        })
-    
-    for m in maintenance:
-        parts_status = "✓ Parts ready" if not m['parts_required'] else "⚠️ Parts needed"
-        print(f"  🔧 Engine {m['engine_id']}: {m['maintenance_type']} in {m['days_until']} days - {parts_status}")
-    
-    print("\n✓ API simulation demonstration complete!")
+    print("\n✓ Model prediction demonstration complete!")
     print()
 
 
-def demo_dashboard_concepts():
-    """Demonstrate Power BI dashboard concepts"""
-    print("📊 DEMO 5: Power BI Dashboard Architecture")
+def demo_alert_system():
+    """Demonstrate alert system"""
+    print("🚨 DEMO 5: Alert System")
     print("-" * 60)
     
-    dashboards = {
-        'Executive Overview': {
-            'audience': 'C-level executives, Operations managers',
-            'refresh_rate': '15 minutes',
-            'key_visuals': [
-                'Fleet Health KPI Cards',
-                'Cost Savings Trend',
-                'Model Performance Metrics',
-                'Fleet Status Donut Chart'
-            ]
-        },
-        'Operations Dashboard': {
-            'audience': 'Operations team, Shift supervisors',
-            'refresh_rate': '5 minutes',
-            'key_visuals': [
-                'Real-time Engine Grid',
-                'Critical Alerts Panel',
-                'Priority Action List',
-                'Response Time Tracker'
-            ]
-        },
-        'Maintenance Planning': {
-            'audience': 'Maintenance managers, Schedulers',
-            'refresh_rate': '30 minutes',
-            'key_visuals': [
-                'Maintenance Timeline',
-                'Parts Inventory Status',
-                'Technician Workload',
-                'RUL Prediction Chart'
-            ]
-        },
-        'Technical Performance': {
-            'audience': 'Data scientists, ML engineers',
-            'refresh_rate': '1 hour',
-            'key_visuals': [
-                'Model Accuracy Trends',
-                'Prediction vs Actual',
-                'Business Penalty Analysis',
-                'Alert Effectiveness'
-            ]
-        }
-    }
+    print("Alert Classification System:")
     
-    for name, config in dashboards.items():
-        print(f"\n📋 {name}:")
-        print(f"   👥 Audience: {config['audience']}")
-        print(f"   🔄 Refresh: {config['refresh_rate']}")
-        print(f"   📊 Key Visuals:")
-        for visual in config['key_visuals']:
-            print(f"      • {visual}")
+    # Simulate different alert types
+    alerts = [
+        {'engine_id': 3, 'type': 'vibration_spike', 'severity': 'critical', 'rul': 15},
+        {'engine_id': 7, 'type': 'temperature_rise', 'severity': 'warning', 'rul': 25},
+        {'engine_id': 1, 'type': 'efficiency_decline', 'severity': 'info', 'rul': 45},
+        {'engine_id': 9, 'type': 'sensor_anomaly', 'severity': 'warning', 'rul': 30},
+        {'engine_id': 5, 'type': 'degradation_trend', 'severity': 'info', 'rul': 60}
+    ]
     
-    print("\n🎨 Visual Priority Logic:")
-    print("   🔴 Red (Critical): Immediate attention required")
-    print("   🟡 Yellow (Warning): Schedule maintenance soon")
-    print("   🟢 Green (Healthy): Normal operations")
-    print("   📱 Mobile-optimized for field technicians")
+    for alert in alerts:
+        if alert['severity'] == 'critical':
+            icon = "🔴"
+            action = "IMMEDIATE ACTION REQUIRED"
+        elif alert['severity'] == 'warning':
+            icon = "🟡"
+            action = "Schedule maintenance"
+        else:
+            icon = "🟢"
+            action = "Monitor closely"
+        
+        print(f"\n{icon} Engine {alert['engine_id']} - {alert['type'].upper()}")
+        print(f"   Severity: {alert['severity']}")
+        print(f"   RUL: {alert['rul']} cycles")
+        print(f"   Action: {action}")
     
-    print("\n✓ Dashboard concepts demonstration complete!")
+    print("\n📊 Alert Statistics:")
+    critical_count = sum(1 for a in alerts if a['severity'] == 'critical')
+    warning_count = sum(1 for a in alerts if a['severity'] == 'warning')
+    info_count = sum(1 for a in alerts if a['severity'] == 'info')
+    
+    print(f"   🔴 Critical: {critical_count}")
+    print(f"   🟡 Warning: {warning_count}")
+    print(f"   🟢 Info: {info_count}")
+    
+    print("\n✓ Alert system demonstration complete!")
     print()
 
 
@@ -391,25 +341,25 @@ def demo_complete_workflow():
     print(f"   {color} Risk Level: {risk_level}")
     print(f"   📋 Recommendation: {recommendation}")
     
-    # Power BI integration
-    print("\n4. 📊 Power BI Dashboard Updates:")
+    # System notifications
+    print("\n4. 📋 System Updates:")
     
-    dashboard_updates = {
-        'Executive': f"Fleet status updated, {1 if risk_level == 'CRITICAL' else 0} critical engines",
-        'Operations': f"{'New alert generated' if change_detected else 'No new alerts'}",
-        'Maintenance': f"Engine {engine_id} scheduled for maintenance in {int(rul_prediction * 0.8)} days",
-        'Technical': f"Model predictions logged, penalty score updated"
+    system_updates = {
+        'Maintenance Schedule': f"Engine {engine_id} scheduled for maintenance in {int(rul_prediction * 0.8)} days",
+        'Alert Log': f"{'New alert generated' if change_detected else 'No new alerts'}",
+        'Model Performance': f"Predictions logged, accuracy metrics updated",
+        'Fleet Status': f"Fleet status updated, {1 if risk_level == 'CRITICAL' else 0} critical engines"
     }
     
-    for dashboard, update in dashboard_updates.items():
-        print(f"   📊 {dashboard}: {update}")
+    for system, update in system_updates.items():
+        print(f"   📋 {system}: {update}")
     
-    # Mobile notification (if critical)
+    # Notifications (if critical)
     if risk_level == "CRITICAL":
-        print("\n5. 📱 Mobile Notifications:")
-        print("   🚨 CRITICAL ALERT sent to field technicians")
-        print("   📧 Email notification sent to maintenance manager")
-        print("   💬 Teams message posted to operations channel")
+        print("\n5. 📢 Notifications:")
+        print("   🚨 CRITICAL ALERT sent to maintenance team")
+        print("   📧 Email notification sent to operations manager")
+        print("   📞 SMS alert sent to field technicians")
     
     print("\n✓ Complete workflow demonstration finished!")
     print()
@@ -424,27 +374,27 @@ def print_summary():
     print("   • 25% Baseline Normalization for engine-specific degradation")
     print("   • Dual LSTM Architecture (Temperature + Vibration)")
     print("   • Business-Aligned Penalty System")
-    print("   • Power BI API Integration")
-    print("   • Multi-Dashboard Architecture")
+    print("   • Alert Classification System")
+    print("   • Maintenance Scheduling")
     print("   • Real-time Monitoring Workflow")
     
     print("\n🎯 Key Business Benefits:")
     print("   • Cost-optimized maintenance scheduling")
     print("   • Catastrophic failure prevention")
-    print("   • Real-time operational insights")
-    print("   • Mobile-enabled field operations")
+    print("   • Real-time failure detection")
+    print("   • Automated alert notifications")
     print("   • ML performance evaluation metrics")
     
     print("\n🚀 Next Steps:")
     print("   1. Run 'python train_models.py --dataset FD001' to train models")
-    print("   2. Start API server with 'python src/api/powerbi_api.py'")
-    print("   3. Follow POWER_BI_INTEGRATION_GUIDE.md for dashboard setup")
-    print("   4. Configure real-time data connections")
+    print("   2. Run predictions with 'python predict.py'")
+    print("   3. Configure alert notifications")
+    print("   4. Set up maintenance scheduling system")
     print("   5. Deploy to production environment")
     
     print("\n📚 Additional Resources:")
     print("   • README.md - Complete system documentation")
-    print("   • POWER_BI_INTEGRATION_GUIDE.md - Dashboard setup guide")
+    print("   • Documentation - System setup guide")
     print("   • src/ - Source code with detailed comments")
     print("   • config/ - Configuration files and examples")
     
@@ -462,8 +412,8 @@ def main():
         loader = demo_data_preprocessing()
         predictor = demo_model_architecture()
         demo_ml_evaluation()
-        demo_api_simulation()
-        demo_dashboard_concepts()
+        demo_model_predictions()
+        demo_alert_system()
         demo_complete_workflow()
         print_summary()
         

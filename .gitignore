@@ -76,9 +76,6 @@ models/*.pkl
 temp_*
 *.tmp
 
-# Power BI
-*.pbix.tmp
-
 # Results and plots (optional - comment out if you want to include them)
 # results/
 # plots/
